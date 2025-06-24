@@ -226,8 +226,15 @@ namespace olc
         inline constexpr v_3d lerp(const v_3d& v1, const double t) const
         {
             return this->operator*(T(1.0 - t)) + (v1 * T(t));
+            //return (*this) * T(1.0 - t) + v1 * T(t);
         }
 
+        // Not sure why CLANG is upset by lerp function
+        inline constexpr auto operator*(const v_3d& rhs) const
+        {
+            return v_3d(x * rhs, y * rhs, z * rhs);
+        }
+        
         // Compare if this vector is numerically equal to another
         inline constexpr bool operator == (const v_3d& rhs) const
         {
@@ -237,7 +244,7 @@ namespace olc
         // Compare if this vector is not numerically equal to another
         inline constexpr bool operator != (const v_3d& rhs) const
         {
-            return (this->x != rhs.x || this->y != rhs.y || this != rhs.z);
+            return (this->x != rhs.x || this->y != rhs.y || this->z != rhs.z);
         }
 
         // Return this vector as a std::string, of the form "(x,y)"
